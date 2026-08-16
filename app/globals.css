@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Palette ─────────────────────────────────────────────────────────── */
+  --color-base: #080808;
+  --color-elevated: #111111;
+  --color-surface: #171717;
+  --color-line: #242424;
+  --color-gold: #c9a227;
+  --color-gold-light: #e2c45a;
+  --color-muted: #a3a3a3;
+
+  /* ── Typographie ─────────────────────────────────────────────────────── */
+  --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Timings ─────────────────────────────────────────────────────────── */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* compense le header sticky lors du scroll vers une ancre */
+    scroll-padding-top: 5.5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-base);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: #080808;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-light);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Scrollbar discrète, cohérente avec le thème sombre */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-base);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a3a;
+  }
+}
+
+@layer components {
+  /* Titre de section : condensé, majuscules, très légèrement espacé */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+  }
+
+  /* Libellé discret au-dessus des titres */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  /* Filet doré très fin utilisé comme séparateur */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-gold) 65%, transparent),
+      transparent
+    );
+  }
+
+  /* Texte doré dégradé, réservé aux accents ponctuels */
+  .text-gold-gradient {
+    background: linear-gradient(
+      120deg,
+      var(--color-gold) 0%,
+      var(--color-gold-light) 45%,
+      var(--color-gold) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Halo lumineux discret placé derrière certaines sections */
+  .glow-gold {
+    background: radial-gradient(
+      55% 55% at 50% 0%,
+      color-mix(in srgb, var(--color-gold) 14%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  /*
+   * Apparition du hero en CSS pur plutôt qu'en JavaScript : le contenu
+   * au-dessus de la ligne de flottaison reste visible même si le JS est lent,
+   * bloqué ou désactivé. Le délai est passé via --rise-delay.
+   */
+  .rise {
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--rise-delay, 0s);
+  }
+
+  /*
+   * Révélation au scroll, en amélioration progressive.
+   * L'état masqué n'existe QUE si le JavaScript a posé `.js` sur <html>
+   * (script inline exécuté avant le premier rendu). Sans JS, tout est visible.
+   */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 24px));
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+  }
+
+  .js .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* Grain très léger : casse les aplats noirs sans alourdir la page */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Respect strict de la préférence système. `animation-fill-mode: both` étant
+ * déjà posé, réduire la durée à zéro affiche immédiatement l'état final :
+ * le site reste 100 % lisible et fonctionnel, simplement sans mouvement.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+  }
+
+  /* Aucun état masqué en attente d'observation : tout est lisible d'emblée. */
+  .js .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

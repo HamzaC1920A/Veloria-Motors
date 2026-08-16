@@ -1,0 +1,31 @@
+node_modules
+.next
+out
+build
+.DS_Store
+*.pem
+npm-debug.log*
+.env*.local
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Variables d'environnement (aucun fichier .env n'existe aujourd'hui,
+# ces règles préviennent tout envoi accidentel par la suite)
+.env
+.env.local
+.env.development
+.env.development.local
+.env.production
+.env.production.local
+.env.test
+.env.test.local
+
+# Journaux
+*.log
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Divers
+Thumbs.db
+.vercel
