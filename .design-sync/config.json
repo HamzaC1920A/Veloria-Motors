@@ -1,0 +1,49 @@
+{
+  "projectId": "8f914e3b-03f8-4503-8f21-6a6af69df337",
+  "shape": "package",
+  "pkg": "gloria-motors-demo",
+  "globalName": "VeloriaMotors",
+  "tsconfig": "tsconfig.json",
+  "srcDir": "components",
+  "readmeHeader": ".design-sync/conventions.md",
+  "buildCmd": "node .ds-sync/node_modules/@tailwindcss/cli/dist/index.mjs -i .design-sync/ds-input.css -o .design-sync/.cache/ds.css --minify",
+  "cssEntry": ".design-sync/.cache/ds.css",
+  "overrides": {
+    "SectionHeading": {
+      "cardMode": "column"
+    }
+  },
+  "dtsPropsFor": {
+    "Button": "/** Style visuel. `gold` = action principale, `whatsapp` = vert de la marque. @default \"gold\" */\n  variant?: \"gold\" | \"outline\" | \"ghost\" | \"whatsapp\";\n  /** Hauteur du bouton : 44px / 48px / 56px. @default \"md\" */\n  size?: \"sm\" | \"md\" | \"lg\";\n  /** Libellé. Rendu en majuscules et interlettré par le composant. */\n  children: React.ReactNode;\n  className?: string;\n  type?: \"button\" | \"submit\" | \"reset\";\n  disabled?: boolean;\n  onClick?: React.MouseEventHandler<HTMLButtonElement>;\n  \"aria-label\"?: string;",
+    "ButtonLink": "/** Destination du lien (`#ancre`, `tel:`, `https://wa.me/...`). Requis. */\n  href: string;\n  /** Style visuel. `gold` = action principale, `whatsapp` = vert de la marque. @default \"gold\" */\n  variant?: \"gold\" | \"outline\" | \"ghost\" | \"whatsapp\";\n  /** Hauteur du bouton : 44px / 48px / 56px. @default \"md\" */\n  size?: \"sm\" | \"md\" | \"lg\";\n  /** Libellé. Rendu en majuscules et interlettré par le composant. */\n  children: React.ReactNode;\n  className?: string;\n  target?: string;\n  rel?: string;\n  \"aria-label\"?: string;",
+    "SectionHeading": "/** Sur-titre court en doré interlettré, au-dessus du titre. */\n  eyebrow: string;\n  /** Première ligne du titre, en blanc. */\n  title: string;\n  /** Seconde ligne. Omise, le titre tient sur une ligne. Voir `accent`. */\n  titleAccent?: string;\n  /** Traitement de `titleAccent` : dégradé doré ou blanc. Réserver `gold` aux\n   * sections pivots — une page ne devrait pas porter plus de deux accents dorés.\n   * @default \"gold\" */\n  accent?: \"gold\" | \"plain\";\n  /** Échelle du titre : `lg` pour une section pivot, `md` pour le rythme courant. @default \"lg\" */\n  size?: \"md\" | \"lg\";\n  /** Paragraphe d'introduction sous le filet doré. */\n  description?: string;\n  /** @default \"center\" */\n  align?: \"left\" | \"center\";\n  className?: string;",
+    "Reveal": "/** Contenu révélé à l'entrée dans le viewport. */\n  children: React.ReactNode;\n  /** Délai avant l'apparition, en secondes — sert à cascader une liste. @default 0 */\n  delay?: number;\n  /** Translation verticale initiale, en pixels. @default 24 */\n  y?: number;\n  /** Balise rendue. Utiliser `li` dans une liste. @default \"div\" */\n  as?: \"div\" | \"li\" | \"section\";\n  className?: string;",
+    "DemoNotice": "/** Texte de la mention. Chaîne simple, pas de JSX. */\n  children: string;\n  /** `gold` = mention mise en avant ; `subtle` = mention neutre, quand plusieurs\n   * sections d'affilée en portent une. @default \"gold\" */\n  tone?: \"gold\" | \"subtle\";\n  className?: string;"
+  },
+  "componentSrcMap": {
+    "Button": "components/ui/Button.tsx",
+    "ButtonLink": "components/ui/Button.tsx",
+    "SectionHeading": "components/ui/SectionHeading.tsx",
+    "Reveal": "components/ui/Reveal.tsx",
+    "DemoNotice": "components/ui/DemoNotice.tsx",
+    "Logo": null,
+    "Header": null,
+    "Hero": null,
+    "Intro": null,
+    "Services": null,
+    "ServiceCard": null,
+    "Highlights": null,
+    "Projects": null,
+    "BeforeAfter": null,
+    "Gallery": null,
+    "Lightbox": null,
+    "Appointment": null,
+    "AppointmentForm": null,
+    "Contact": null,
+    "Footer": null,
+    "WhatsAppButton": null,
+    "HomePage": null,
+    "RootLayout": null,
+    "StructuredData": null
+  }
+}

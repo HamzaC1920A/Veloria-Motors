@@ -10,27 +10,28 @@ export function Appointment() {
   return (
     <section
       id="rendez-vous"
-      className="relative overflow-hidden border-t border-white/[0.06] bg-elevated py-24 sm:py-32 lg:py-40"
+      className="grain section section--lg relative overflow-hidden bg-elevated"
     >
       <div
         className="glow-gold pointer-events-none absolute inset-x-0 top-0 h-96"
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-[1400px] px-5 sm:px-8">
+      <div className="container-page relative">
         <SectionHeading
           eyebrow="Rendez-vous"
           title="Prenez"
           titleAccent="rendez-vous"
+          size="lg"
           description="Renseignez votre demande en quelques secondes : elle nous parvient directement sur WhatsApp."
         />
 
         <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-[1fr_1.35fr] lg:gap-14">
           {/* Raccourcis de contact direct */}
           <Reveal>
-            <div className="flex h-full flex-col gap-8 border border-white/[0.08] bg-surface p-8 sm:p-10">
+            <div className="card flex h-full flex-col gap-8 bg-surface p-8 sm:p-10">
               <div>
-                <h3 className="display text-2xl text-white sm:text-3xl">
+                <h3 className="display text-step-2 text-white">
                   Vous préférez
                   <br />
                   <span className="text-gold-gradient">nous parler ?</span>
@@ -74,7 +75,7 @@ export function Appointment() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            <div className="border border-white/[0.08] bg-surface p-6 sm:p-10">
+            <div className="card bg-surface p-6 sm:p-10">
               <AppointmentForm />
             </div>
           </Reveal>

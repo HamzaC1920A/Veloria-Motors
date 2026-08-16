@@ -16,28 +16,29 @@ export function Contact() {
     : encodeURIComponent(siteConfig.mapsQuery);
 
   return (
-    <section
-      id="contact"
-      className="relative border-t border-white/[0.06] py-24 sm:py-32 lg:py-40"
-    >
-      <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
+    <section id="contact" className="section relative">
+      <div className="hairline absolute inset-x-0 top-0" aria-hidden="true" />
+
+      <div className="container-page">
         <SectionHeading
           eyebrow="Contact"
           title="Nous"
           titleAccent="contacter"
+          accent="plain"
+          size="md"
           description="Une question, un devis, un besoin précis ? Nous vous répondons directement."
         />
 
         <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:gap-14">
           <Reveal>
-            <ul className="space-y-px border border-white/[0.08] bg-white/[0.08]">
+            <ul className="space-y-px overflow-hidden rounded-card border border-white/[0.08] bg-white/[0.08]">
               {/* Téléphone — les deux numéros confirmés */}
               <li className="flex items-start gap-5 bg-base p-7 sm:p-8">
-                <span className="flex size-12 shrink-0 items-center justify-center border border-gold/25 bg-gold/[0.06] text-gold">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-card border border-gold/25 bg-gold/[0.06] text-gold">
                   <Phone className="size-5" aria-hidden="true" strokeWidth={1.5} />
                 </span>
                 <span>
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/45">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/60">
                     Téléphone
                   </span>
                   <a
@@ -63,9 +64,11 @@ export function Contact() {
                   href={whatsappUrl(DEFAULT_WHATSAPP_MESSAGE)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-start gap-5 p-7 transition-colors hover:bg-elevated sm:p-8"
+                  /* Ligne de liste : pas d'élévation (elle est encadrée), mais
+                     le même état au focus clavier qu'au survol. */
+                  className="group flex items-start gap-5 p-7 transition-colors hover:bg-elevated focus-visible:bg-elevated sm:p-8"
                 >
-                  <span className="flex size-12 shrink-0 items-center justify-center border border-gold/25 bg-gold/[0.06] text-gold transition-colors group-hover:border-gold/60">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-card border border-gold/25 bg-gold/[0.06] text-gold transition-colors group-hover:border-gold/60 group-focus-visible:border-gold/60">
                     <MessageCircle
                       className="size-5"
                       aria-hidden="true"
@@ -73,10 +76,10 @@ export function Contact() {
                     />
                   </span>
                   <span>
-                    <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/45">
+                    <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/60">
                       WhatsApp
                     </span>
-                    <span className="display mt-2 block text-xl text-white transition-colors group-hover:text-gold sm:text-2xl">
+                    <span className="display mt-2 block text-xl text-white transition-colors group-hover:text-gold group-focus-visible:text-gold sm:text-2xl">
                       Contacter notre équipe
                     </span>
                   </span>
@@ -89,20 +92,20 @@ export function Contact() {
                   className={
                     addressKnown
                       ? "flex size-12 shrink-0 items-center justify-center border border-gold/25 bg-gold/[0.06] text-gold"
-                      : "flex size-12 shrink-0 items-center justify-center border border-white/12 text-white/40"
+                      : "flex size-12 shrink-0 items-center justify-center rounded-card border border-white/12 text-white/55"
                   }
                 >
                   <MapPin className="size-5" aria-hidden="true" strokeWidth={1.5} />
                 </span>
                 <span>
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/45">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/60">
                     Adresse
                   </span>
                   <span
                     className={
                       addressKnown
                         ? "display mt-2 block text-xl text-white sm:text-2xl"
-                        : "display mt-2 block text-xl text-white/55 sm:text-2xl"
+                        : "display mt-2 block text-xl text-white/60 sm:text-2xl"
                     }
                   >
                     {addressKnown ? siteConfig.address : TODO_LABEL}
@@ -112,14 +115,14 @@ export function Contact() {
 
               {/* Horaires — non confirmés */}
               <li className="flex items-start gap-5 bg-base p-7 sm:p-8">
-                <span className="flex size-12 shrink-0 items-center justify-center border border-white/12 text-white/40">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-card border border-white/12 text-white/55">
                   <Clock className="size-5" aria-hidden="true" strokeWidth={1.5} />
                 </span>
                 <span>
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/45">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/60">
                     Horaires
                   </span>
-                  <span className="display mt-2 block text-xl text-white/55 sm:text-2xl">
+                  <span className="display mt-2 block text-xl text-white/60 sm:text-2xl">
                     {isTodo(siteConfig.openingHours)
                       ? TODO_LABEL
                       : siteConfig.openingHours}
@@ -129,14 +132,14 @@ export function Contact() {
 
               {/* E-mail — non confirmé */}
               <li className="flex items-start gap-5 bg-base p-7 sm:p-8">
-                <span className="flex size-12 shrink-0 items-center justify-center border border-white/12 text-white/40">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-card border border-white/12 text-white/55">
                   <Mail className="size-5" aria-hidden="true" strokeWidth={1.5} />
                 </span>
                 <span>
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/45">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/60">
                     E-mail
                   </span>
-                  <span className="display mt-2 block text-xl text-white/55 sm:text-2xl">
+                  <span className="display mt-2 block text-xl text-white/60 sm:text-2xl">
                     {isTodo(siteConfig.email) ? TODO_LABEL : siteConfig.email}
                   </span>
                 </span>
@@ -154,7 +157,7 @@ export function Contact() {
           <Reveal delay={0.12}>
             <div className="flex h-full flex-col gap-6">
               {/* Emplacement carte : activé dès que l'adresse est connue */}
-              <div className="relative min-h-[300px] flex-1 overflow-hidden border border-white/[0.08] bg-surface">
+              <div className="card relative min-h-[300px] flex-1 overflow-hidden bg-surface">
                 {mapsQuery ? (
                   <iframe
                     title="Localisation de l'atelier"
@@ -165,11 +168,11 @@ export function Contact() {
                   />
                 ) : (
                   <div className="flex h-full flex-col items-center justify-center gap-4 p-10 text-center">
-                    <MapPin className="size-9 text-white/20" aria-hidden="true" />
-                    <p className="display text-xl text-white/45">
+                    <MapPin className="size-9 text-white/35" aria-hidden="true" />
+                    <p className="display text-xl text-white/60">
                       Carte à activer
                     </p>
-                    <p className="max-w-xs text-xs leading-relaxed text-white/35">
+                    <p className="max-w-xs text-xs leading-relaxed text-muted">
                       L&apos;emplacement Google Maps est déjà intégré : il s&apos;affichera
                       automatiquement dès que l&apos;adresse exacte sera renseignée dans
                       la configuration du site.

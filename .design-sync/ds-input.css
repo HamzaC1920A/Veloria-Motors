@@ -1,0 +1,26 @@
+/*
+ * Entrée CSS du design system synchronisé vers claude.ai/design.
+ *
+ * Le site sert ses polices via `next/font/google`, qui définit les variables
+ * `--font-inter` / `--font-oswald` à l'exécution. Hors de Next, ces variables
+ * n'existent pas et tout retomberait sur une police système : on les redéfinit
+ * donc ici, adossées à Google Fonts, pour que les previews et les designs
+ * générés rendent dans la vraie typographie de la marque.
+ *
+ * Le reste (tokens @theme, classes .display / .eyebrow / .hairline / .reveal)
+ * provient directement de app/globals.css — source unique, aucune duplication.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap");
+@import "../app/globals.css";
+
+/* Les classes utilitaires du design system sont scannées ici. */
+@source "../components/ui";
+@source "../lib";
+/* Les previews utilisent l'idiome du design system : leurs classes doivent
+   être compilées elles aussi, sinon les cartes rendent sans mise en page. */
+@source "./previews";
+
+:root {
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-oswald: "Oswald", "Arial Narrow", sans-serif;
+}

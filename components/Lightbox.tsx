@@ -105,7 +105,7 @@ export function Lightbox({ items, index, onClose, onIndexChange }: LightboxProps
       <div className="relative z-10 flex items-center justify-between px-5 py-4 sm:px-8">
         <span className="font-sans text-xs tracking-[0.2em] text-white/50">
           {String(index + 1).padStart(2, "0")}
-          <span className="mx-2 text-white/25">/</span>
+          <span className="mx-2 text-white/45">/</span>
           {String(items.length).padStart(2, "0")}
         </span>
         <button
@@ -113,7 +113,7 @@ export function Lightbox({ items, index, onClose, onIndexChange }: LightboxProps
           type="button"
           onClick={onClose}
           aria-label="Fermer la visionneuse"
-          className="flex size-11 items-center justify-center rounded-sm border border-white/15 text-white transition-colors hover:border-gold hover:text-gold"
+          className="flex size-11 items-center justify-center rounded-card border border-white/15 text-white transition-colors hover:border-gold hover:text-gold"
         >
           <X className="size-5" aria-hidden="true" />
         </button>
@@ -139,7 +139,7 @@ export function Lightbox({ items, index, onClose, onIndexChange }: LightboxProps
             type="button"
             onClick={() => goTo(-1)}
             aria-label="Image précédente"
-            className="absolute top-1/2 left-2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-sm border border-white/15 bg-black/40 text-white transition-colors hover:border-gold hover:text-gold sm:left-5"
+            className="absolute top-1/2 left-2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-card border border-white/15 bg-black/40 text-white transition-colors hover:border-gold hover:text-gold sm:left-5"
           >
             <ChevronLeft className="size-6" aria-hidden="true" />
           </button>
@@ -147,7 +147,7 @@ export function Lightbox({ items, index, onClose, onIndexChange }: LightboxProps
             type="button"
             onClick={() => goTo(1)}
             aria-label="Image suivante"
-            className="absolute top-1/2 right-2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-sm border border-white/15 bg-black/40 text-white transition-colors hover:border-gold hover:text-gold sm:right-5"
+            className="absolute top-1/2 right-2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-card border border-white/15 bg-black/40 text-white transition-colors hover:border-gold hover:text-gold sm:right-5"
           >
             <ChevronRight className="size-6" aria-hidden="true" />
           </button>
@@ -159,7 +159,7 @@ export function Lightbox({ items, index, onClose, onIndexChange }: LightboxProps
           <p className="display text-lg text-white sm:text-xl">{current.title}</p>
         ) : null}
         {current.caption ? (
-          <p className="mt-1.5 text-xs text-white/45">{current.caption}</p>
+          <p className="mt-1.5 text-xs text-muted">{current.caption}</p>
         ) : null}
       </div>
     </div>

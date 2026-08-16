@@ -9,15 +9,71 @@ import { siteConfig, links } from "@/config/site";
 import { whatsappUrl, DEFAULT_WHATSAPP_MESSAGE } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
+/** Ancres suivies par l'indicateur de section active. */
+const SECTION_IDS = navigation.map((item) => item.href.replace("#", ""));
+
+const FIRST_SECTION_ID = SECTION_IDS[0] ?? "";
+
+/** Ligne de référence sous le header, qui détermine la section « courante ». */
+const ACTIVE_LINE_OFFSET = 120;
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [activeId, setActiveId] = useState<string>(FIRST_SECTION_ID);
 
+  /*
+   * Un seul écouteur de défilement pour les trois indicateurs (fond du header,
+   * barre de progression, section active), throttlé par requestAnimationFrame :
+   * sur une landing de neuf sections, c'est le principal repère d'orientation.
+   */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    let frame = 0;
+
+    const measure = () => {
+      frame = 0;
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 24);
+
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(scrollable > 0 ? Math.min(1, scrollY / scrollable) : 0);
+
+      /*
+       * Section active = la dernière DANS L'ORDRE DU DOCUMENT dont le haut a
+       * franchi la ligne de référence. On compare les positions plutôt que
+       * l'ordre du menu : « À propos » est cinquième dans la navigation mais
+       * deuxième dans la page.
+       */
+      const line = scrollY + ACTIVE_LINE_OFFSET;
+      let current = FIRST_SECTION_ID;
+      let bestTop = Number.NEGATIVE_INFINITY;
+      for (const id of SECTION_IDS) {
+        const element = document.getElementById(id);
+        if (!element) continue;
+        const top = element.getBoundingClientRect().top + scrollY;
+        if (top <= line && top > bestTop) {
+          bestTop = top;
+          current = id;
+        }
+      }
+      setActiveId(current);
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(measure);
+    };
+
+    measure();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   // Verrouille le défilement de la page tant que le menu mobile est ouvert.
@@ -48,7 +104,17 @@ export function Header() {
             : "border-b border-transparent bg-transparent",
         )}
       >
-        <div className="mx-auto flex h-[68px] max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:h-20">
+        {/* Barre de progression de lecture — décorative, jamais annoncée. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-gradient-to-r from-gold to-gold-light transition-opacity duration-500"
+          style={{
+            transform: `scaleX(${progress})`,
+            opacity: scrolled ? 1 : 0,
+          }}
+        />
+
+        <div className="container-page flex h-[68px] items-center justify-between lg:h-20">
           <a
             href="#accueil"
             onClick={closeMenu}
@@ -59,17 +125,30 @@ export function Header() {
 
           <nav aria-label="Navigation principale" className="hidden lg:block">
             <ul className="flex items-center gap-9">
-              {navigation.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className="group relative text-[13px] font-medium tracking-wide text-white/75 transition-colors hover:text-white"
-                  >
-                    {item.label}
-                    <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </li>
-              ))}
+              {navigation.map((item) => {
+                const isActive = item.href === `#${activeId}`;
+                return (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      aria-current={isActive ? "true" : undefined}
+                      className={cn(
+                        "group relative text-[13px] font-medium tracking-wide transition-colors",
+                        isActive ? "text-white" : "text-white/75 hover:text-white",
+                      )}
+                    >
+                      {item.label}
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          "absolute -bottom-1.5 left-0 h-px bg-gold transition-all duration-300",
+                          isActive ? "w-full" : "w-0 group-hover:w-full",
+                        )}
+                      />
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
@@ -94,7 +173,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Écrire sur WhatsApp"
-              className="flex size-11 items-center justify-center rounded-sm border border-white/10 text-white transition-colors hover:border-[#25a35a] hover:text-[#25a35a]"
+              className="flex size-11 items-center justify-center rounded-card border border-white/10 text-white transition-colors hover:border-[#25a35a] hover:text-[#25a35a]"
             >
               <MessageCircle className="size-5" aria-hidden="true" />
             </a>
@@ -104,7 +183,7 @@ export function Header() {
               aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={menuOpen}
               aria-controls="menu-mobile"
-              className="flex size-11 items-center justify-center rounded-sm border border-white/10 text-white transition-colors hover:border-gold hover:text-gold"
+              className="flex size-11 items-center justify-center rounded-card border border-white/10 text-white transition-colors hover:border-gold hover:text-gold"
             >
               {menuOpen ? (
                 <X className="size-5" aria-hidden="true" />
@@ -126,17 +205,27 @@ export function Header() {
       >
         <nav aria-label="Navigation mobile" className="px-5 pt-6 pb-10">
           <ul className="flex flex-col">
-            {navigation.map((item) => (
-              <li key={item.href} className="border-b border-white/[0.07]">
-                <a
-                  href={item.href}
-                  onClick={closeMenu}
-                  className="display block py-5 text-3xl text-white/90 transition-colors hover:text-gold"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
+            {navigation.map((item) => {
+              const isActive = item.href === `#${activeId}`;
+              return (
+                <li key={item.href} className="border-b border-white/[0.07]">
+                  <a
+                    href={item.href}
+                    onClick={closeMenu}
+                    aria-current={isActive ? "true" : undefined}
+                    className={cn(
+                      "display flex items-center gap-3 py-5 text-3xl transition-colors hover:text-gold",
+                      isActive ? "text-gold" : "text-white/90",
+                    )}
+                  >
+                    {isActive ? (
+                      <span className="h-px w-6 bg-gold" aria-hidden="true" />
+                    ) : null}
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="mt-9 flex flex-col gap-3">

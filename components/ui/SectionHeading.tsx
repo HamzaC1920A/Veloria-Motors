@@ -1,21 +1,39 @@
 import { cn } from "@/lib/utils";
 import { Reveal } from "./Reveal";
 
+type Size = "md" | "lg";
+type Accent = "gold" | "plain";
+
 interface SectionHeadingProps {
   eyebrow: string;
   title: string;
-  /** Deuxième ligne du titre, mise en valeur en doré. */
+  /** Deuxième ligne du titre. Voir `accent` pour son traitement. */
   titleAccent?: string;
+  /**
+   * Traitement de `titleAccent`. `gold` = dégradé doré, réservé aux sections
+   * pivots ; `plain` = blanc. Une page ne devrait porter qu'un ou deux accents
+   * dorés : au-delà, l'or cesse d'être un signal.
+   */
+  accent?: Accent;
   description?: string;
+  /** Échelle du titre. `lg` pour une section pivot, `md` pour le rythme courant. */
+  size?: Size;
   align?: "left" | "center";
   className?: string;
 }
+
+const titleSizes: Record<Size, string> = {
+  md: "text-step-3",
+  lg: "text-step-4",
+};
 
 export function SectionHeading({
   eyebrow,
   title,
   titleAccent,
+  accent = "gold",
   description,
+  size = "lg",
   align = "center",
   className,
 }: SectionHeadingProps) {
@@ -30,16 +48,29 @@ export function SectionHeading({
       )}
     >
       <Reveal>
-        <p className="eyebrow">{eyebrow}</p>
+        <div
+          className={cn(
+            "flex items-center gap-4",
+            centered && "justify-center",
+          )}
+        >
+          <span className="h-px w-10 bg-gold" aria-hidden="true" />
+          <p className="eyebrow">{eyebrow}</p>
+          {centered ? (
+            <span className="h-px w-10 bg-gold" aria-hidden="true" />
+          ) : null}
+        </div>
       </Reveal>
 
-      <Reveal delay={0.08}>
-        <h2 className="display mt-4 text-4xl sm:text-5xl lg:text-6xl">
+      <Reveal delay={0.07}>
+        <h2 className={cn("display mt-5", titleSizes[size])}>
           {title}
           {titleAccent ? (
             <>
               <br />
-              <span className="text-gold-gradient">{titleAccent}</span>
+              <span className={accent === "gold" ? "text-gold-gradient" : undefined}>
+                {titleAccent}
+              </span>
             </>
           ) : null}
         </h2>
@@ -53,8 +84,8 @@ export function SectionHeading({
       </Reveal>
 
       {description ? (
-        <Reveal delay={0.18}>
-          <p className="mt-7 text-base leading-relaxed text-muted sm:text-lg">
+        <Reveal delay={0.21}>
+          <p className="mt-7 text-[1rem] leading-relaxed text-muted sm:text-lg">
             {description}
           </p>
         </Reveal>

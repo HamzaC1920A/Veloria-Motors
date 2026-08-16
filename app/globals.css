@@ -1,6 +1,14 @@
 @import "tailwindcss";
 
 @theme {
+  /*
+   * ⚠️ `--color-base` rend l'utilitaire `text-base` ambigu : Tailwind le résout
+   * en COULEUR (#080808) et non en taille de police. Ne pas écrire `text-base`
+   * ni `sm:text-base` — utiliser `text-[1rem]`, sous peine de texte noir sur
+   * fond noir. Le nom du token fait partie du contrat du design system
+   * (`.design-sync/conventions.md`) et n'est donc pas renommé.
+   */
+
   /* ── Palette ─────────────────────────────────────────────────────────── */
   --color-base: #080808;
   --color-elevated: #111111;
@@ -13,6 +21,28 @@
   /* ── Typographie ─────────────────────────────────────────────────────── */
   --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /*
+   * Échelle typographique fluide. Une seule source pour les titres : la marche
+   * entre le H1 du hero (step-5) et les titres de section (step-4 / step-3) est
+   * ainsi constante, quelle que soit la largeur de l'écran.
+   */
+  --text-step-1: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-step-2: clamp(1.25rem, 1.05rem + 0.8vw, 1.5rem);
+  --text-step-3: clamp(1.75rem, 1.15rem + 2.4vw, 2.75rem);
+  --text-step-4: clamp(2rem, 1.2rem + 3.2vw, 3.25rem);
+  --text-step-5: clamp(2.5rem, 1.4rem + 5.5vw, 5.75rem);
+
+  /* ── Rayon ───────────────────────────────────────────────────────────── */
+  /* Rayon unique du système. Les formes circulaires (logo, poignée, bouton
+     flottant) restent volontairement en `rounded-full`. */
+  --radius-card: 2px;
+
+  /* ── Rythme vertical ─────────────────────────────────────────────────── */
+  /* Trois densités de section, au lieu d'une hauteur unique répétée partout. */
+  --space-section-sm: clamp(3.5rem, 2.5rem + 3vw, 5.5rem);
+  --space-section-md: clamp(5rem, 3.5rem + 5vw, 8rem);
+  --space-section-lg: clamp(6rem, 4rem + 7vw, 10rem);
 
   /* ── Timings ─────────────────────────────────────────────────────────── */
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
@@ -68,6 +98,83 @@
 }
 
 @layer components {
+  /*
+   * Gouttière de page. Remplace le `mx-auto max-w-[1400px] px-5 sm:px-8`
+   * qui était recopié dans chaque section : une seule largeur de référence.
+   */
+  .container-page {
+    width: 100%;
+    max-width: 1400px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (width >= 40rem) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  /*
+   * Densité de section. `.section` est la densité courante ; `--sm` resserre
+   * (bandeaux, comparatif), `--lg` aère (sections pivots). C'est ce contraste
+   * de rythme qui distingue les blocs, plus qu'un liseré à 6 % d'opacité.
+   */
+  .section {
+    padding-block: var(--space-section-md);
+  }
+
+  .section--sm {
+    padding-block: var(--space-section-sm);
+  }
+
+  .section--lg {
+    padding-block: var(--space-section-lg);
+  }
+
+  /* Surface de carte : bordure, fond et rayon uniques pour tout le site. */
+  .card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-card);
+    background-color: var(--color-elevated);
+  }
+
+  /*
+   * Langage d'interaction unique des éléments cliquables : élévation,
+   * bordure dorée, filet doré en pied. `:focus-visible` déclenche exactement
+   * le même état que `:hover` — la navigation au clavier voit ce que voit la
+   * souris, ce qui n'était pas le cas auparavant.
+   */
+  .card-interactive {
+    position: relative;
+    transition:
+      transform 0.5s var(--ease-premium),
+      border-color 0.5s var(--ease-premium);
+  }
+
+  .card-interactive::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    width: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
+    transition: width 0.5s var(--ease-premium);
+  }
+
+  .card-interactive:hover,
+  .card-interactive:focus-visible {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--color-gold) 40%, transparent);
+  }
+
+  .card-interactive:hover::after,
+  .card-interactive:focus-visible::after {
+    width: 100%;
+  }
+
   /* Titre de section : condensé, majuscules, très légèrement espacé */
   .display {
     font-family: var(--font-display);

@@ -5,7 +5,7 @@ type Variant = "gold" | "outline" | "ghost" | "whatsapp";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2.5 font-semibold uppercase tracking-[0.14em] " +
+  "inline-flex items-center justify-center gap-2.5 rounded-card font-semibold uppercase tracking-[0.14em] " +
   "transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] " +
   "disabled:pointer-events-none disabled:opacity-50 select-none";
 

@@ -29,3 +29,10 @@ pnpm-debug.log*
 # Divers
 Thumbs.db
 .vercel
+
+# design-sync (outils stages, sortie generee, etat machine)
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules

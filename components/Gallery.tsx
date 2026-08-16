@@ -39,20 +39,21 @@ export function Gallery() {
   };
 
   return (
-    <section
-      id="galerie"
-      className="relative border-t border-white/[0.06] py-24 sm:py-32 lg:py-40"
-    >
-      <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
+    <section id="galerie" className="section relative">
+      <div className="hairline absolute inset-x-0 top-0" aria-hidden="true" />
+
+      <div className="container-page">
         <SectionHeading
           eyebrow="Galerie"
           title="Notre univers"
           titleAccent="en images"
+          accent="plain"
+          size="md"
           description="Véhicules, jantes, pneumatiques et travaux d'atelier."
         />
 
         {/* Filtres — défilement horizontal sur mobile */}
-        <Reveal delay={0.1}>
+        <Reveal delay={0.07}>
           <div
             role="group"
             aria-label="Filtrer la galerie par catégorie"
@@ -67,10 +68,10 @@ export function Gallery() {
                   onClick={() => selectCategory(category)}
                   aria-pressed={isActive}
                   className={cn(
-                    "h-11 shrink-0 border px-5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-all duration-300",
+                    "h-11 shrink-0 rounded-card border px-5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-all duration-300",
                     isActive
                       ? "border-gold bg-gold text-black"
-                      : "border-white/12 text-white/60 hover:border-gold/50 hover:text-white",
+                      : "border-white/12 text-muted hover:border-gold/50 hover:text-white",
                   )}
                 >
                   {category}
@@ -87,7 +88,7 @@ export function Gallery() {
                 type="button"
                 onClick={() => setOpenIndex(index)}
                 aria-label={`Agrandir l'image : ${item.alt}`}
-                className="group relative block h-full w-full overflow-hidden border border-white/[0.08] transition-colors duration-500 hover:border-gold/40"
+                className="card-interactive group block h-full w-full overflow-hidden rounded-card border border-white/[0.08]"
               >
                 <div className="relative aspect-square">
                   <Image
@@ -96,18 +97,18 @@ export function Gallery() {
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     /* Même étalonnage que les réalisations, pour une galerie homogène. */
-                    className="object-cover brightness-[0.88] saturate-[0.8] transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.08] group-hover:brightness-100 group-hover:saturate-100"
+                    className="object-cover brightness-[0.88] saturate-[0.8] transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.08] group-hover:brightness-100 group-hover:saturate-100 group-focus-visible:scale-[1.08] group-focus-visible:brightness-100 group-focus-visible:saturate-100"
                   />
-                  <div className="absolute inset-0 bg-base/25 transition-colors duration-500 group-hover:bg-base/55" />
+                  <div className="absolute inset-0 bg-base/25 transition-colors duration-500 group-hover:bg-base/55 group-focus-visible:bg-base/55" />
                   <span
-                    className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
                     aria-hidden="true"
                   >
                     <span className="flex size-12 items-center justify-center rounded-full border border-gold/70 bg-black/40 text-gold backdrop-blur-sm">
                       <Plus className="size-5" />
                     </span>
                   </span>
-                  <span className="absolute bottom-3 left-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/0 transition-colors duration-500 group-hover:text-white/80">
+                  <span className="absolute bottom-3 left-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/0 transition-colors duration-500 group-hover:text-white/85 group-focus-visible:text-white/85">
                     {item.category}
                   </span>
                 </div>
@@ -116,9 +117,9 @@ export function Gallery() {
           ))}
         </ul>
 
-        <Reveal delay={0.1}>
+        <Reveal delay={0.07}>
           <div className="mt-10 flex justify-center">
-            <DemoNotice>
+            <DemoNotice tone="subtle">
               Démonstration : images libres de droits servant à illustrer la mise en
               page. Elles seront remplacées par vos propres photos.
             </DemoNotice>

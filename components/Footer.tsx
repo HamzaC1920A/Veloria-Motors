@@ -3,6 +3,7 @@ import { Logo } from "./Logo";
 import { ButtonLink } from "./ui/Button";
 import { navigation, APPOINTMENT_ANCHOR } from "@/data/navigation";
 import { services } from "@/data/services";
+import { serviceAnchorId } from "./ServiceCard";
 import { siteConfig, links, isTodo } from "@/config/site";
 import { whatsappUrl, DEFAULT_WHATSAPP_MESSAGE } from "@/lib/whatsapp";
 
@@ -13,19 +14,17 @@ export function Footer() {
 
   return (
     <footer className="relative overflow-hidden border-t border-white/[0.08] bg-elevated">
-      <div
-        className="glow-gold pointer-events-none absolute inset-x-0 top-0 h-56"
-        aria-hidden="true"
-      />
-
       {/* Rappel final du CTA principal */}
       <div className="relative border-b border-white/[0.06]">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-start gap-7 px-5 py-14 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:py-16">
+        <div className="container-page flex flex-col items-start gap-7 py-14 lg:flex-row lg:items-center lg:justify-between lg:py-16">
           <div>
-            <h2 className="display text-3xl text-white sm:text-4xl lg:text-5xl">
+            <h2 className="display text-step-3 text-white">
               Un projet pour votre véhicule ?
             </h2>
-            <p className="mt-3 text-sm text-muted sm:text-base">
+            {/* `sm:text-[1rem]` et non `sm:text-base` : le token `--color-base`
+                rend `text-base` ambigu et Tailwind le résout en COULEUR
+                (#080808), ce qui rendait ce texte invisible au-delà de 640px. */}
+            <p className="mt-3 text-sm text-muted sm:text-[1rem]">
               Prenez rendez-vous en quelques secondes.
             </p>
           </div>
@@ -47,7 +46,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-[1400px] px-5 py-16 sm:px-8 lg:py-20">
+      <div className="container-page relative py-16 lg:py-20">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {/* Entreprise */}
           <div>
@@ -62,7 +61,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Page Facebook"
-                className="flex size-11 items-center justify-center border border-white/10 text-white/65 transition-colors hover:border-gold hover:text-gold"
+                className="flex size-11 items-center justify-center rounded-card border border-white/10 text-white/65 transition-colors hover:border-gold hover:text-gold"
               >
                 <Facebook className="size-4.5" aria-hidden="true" />
               </a>
@@ -72,7 +71,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Compte Instagram"
-                  className="flex size-11 items-center justify-center border border-white/10 text-white/65 transition-colors hover:border-gold hover:text-gold"
+                  className="flex size-11 items-center justify-center rounded-card border border-white/10 text-white/65 transition-colors hover:border-gold hover:text-gold"
                 >
                   <Instagram className="size-4.5" aria-hidden="true" />
                 </a>
@@ -82,14 +81,14 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Écrire sur WhatsApp"
-                className="flex size-11 items-center justify-center border border-white/10 text-white/65 transition-colors hover:border-[#25a35a] hover:text-[#25a35a]"
+                className="flex size-11 items-center justify-center rounded-card border border-white/10 text-white/65 transition-colors hover:border-[#25a35a] hover:text-[#25a35a]"
               >
                 <MessageCircle className="size-4.5" aria-hidden="true" />
               </a>
               <a
                 href={links.tel}
                 aria-label={`Appeler le ${siteConfig.phoneDisplay}`}
-                className="flex size-11 items-center justify-center border border-white/10 text-white/65 transition-colors hover:border-gold hover:text-gold"
+                className="flex size-11 items-center justify-center rounded-card border border-white/10 text-white/65 transition-colors hover:border-gold hover:text-gold"
               >
                 <Phone className="size-4.5" aria-hidden="true" />
               </a>
@@ -124,7 +123,7 @@ export function Footer() {
               {services.map((service) => (
                 <li key={service.id}>
                   <a
-                    href="#services"
+                    href={`#${serviceAnchorId(service.id)}`}
                     className="text-sm text-muted transition-colors hover:text-white"
                   >
                     {service.title}
@@ -166,10 +165,10 @@ export function Footer() {
                   WhatsApp
                 </a>
               </li>
-              <li className="text-white/35">
+              <li className="text-white/55">
                 Adresse : {isTodo(siteConfig.address) ? "à compléter" : siteConfig.address}
               </li>
-              <li className="text-white/35">
+              <li className="text-white/55">
                 Horaires :{" "}
                 {isTodo(siteConfig.openingHours) ? "à compléter" : siteConfig.openingHours}
               </li>
@@ -178,17 +177,17 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col gap-5 border-t border-white/[0.06] pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-white/35">
+          <p className="text-xs text-white/55">
             © {YEAR} {siteConfig.siteName}. Tous droits réservés.
           </p>
           <div className="flex items-center gap-6">
-            <p className="text-xs text-white/25">
+            <p className="text-xs text-white/45">
               Version de démonstration — contenu non contractuel.
             </p>
             <a
               href="#accueil"
               aria-label="Revenir en haut de la page"
-              className="flex size-10 items-center justify-center border border-white/10 text-white/50 transition-colors hover:border-gold hover:text-gold"
+              className="flex size-10 items-center justify-center rounded-card border border-white/10 text-white/65 transition-colors hover:border-gold hover:text-gold"
             >
               <ArrowUp className="size-4" aria-hidden="true" />
             </a>

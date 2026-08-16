@@ -57,12 +57,14 @@ export function BeforeAfter() {
   };
 
   return (
-    <section className="relative border-t border-white/[0.06] bg-elevated py-24 sm:py-32 lg:py-40">
-      <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
+    <section className="section section--sm relative bg-elevated">
+      <div className="container-page">
         <SectionHeading
           eyebrow="Comparatif"
           title="Avant"
           titleAccent="Après"
+          accent="plain"
+          size="md"
           description="Déplacez le curseur pour comparer l'état du véhicule avant et après intervention."
         />
 
@@ -74,7 +76,7 @@ export function BeforeAfter() {
                 setDragging(true);
                 updateFromClientX(event.clientX);
               }}
-              className="relative aspect-4/3 w-full touch-pan-y overflow-hidden border border-white/[0.08] select-none sm:aspect-16/10"
+              className="relative aspect-4/3 w-full touch-pan-y overflow-hidden rounded-card border border-white/[0.08] select-none sm:aspect-16/10"
             >
               {/* Après — image de fond */}
               <Image
@@ -101,10 +103,10 @@ export function BeforeAfter() {
                 />
               </div>
 
-              <span className="pointer-events-none absolute top-4 left-4 border border-white/20 bg-black/65 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm">
+              <span className="pointer-events-none absolute top-4 left-4 rounded-card border border-white/20 bg-black/65 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm">
                 {beforeAfter.beforeLabel}
               </span>
-              <span className="pointer-events-none absolute top-4 right-4 border border-gold/40 bg-black/65 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-gold backdrop-blur-sm">
+              <span className="pointer-events-none absolute top-4 right-4 rounded-card border border-gold/40 bg-black/65 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-gold backdrop-blur-sm">
                 {beforeAfter.afterLabel}
               </span>
 
@@ -136,12 +138,12 @@ export function BeforeAfter() {
               </button>
             </div>
 
-            <p className="mt-5 text-center text-xs text-white/40">
+            <p className="mt-5 text-center text-xs text-muted">
               Glissez la poignée — ou utilisez les flèches du clavier.
             </p>
 
             <div className="mt-6 flex justify-center">
-              <DemoNotice>
+              <DemoNotice tone="subtle">
                 Démonstration : les deux visuels proviennent d&apos;une même image
                 libre de droits, volontairement altérée pour illustrer le principe.
               </DemoNotice>

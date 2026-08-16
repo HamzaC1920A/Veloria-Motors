@@ -42,7 +42,7 @@ export function WhatsAppButton() {
       {/* Info-bulle desktop */}
       <span
         role="tooltip"
-        className="pointer-events-none absolute right-full bottom-1/2 mr-3 hidden translate-y-1/2 rounded-sm border border-white/10 bg-base px-3 py-2 text-[11px] whitespace-nowrap text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 lg:block"
+        className="pointer-events-none absolute right-full bottom-1/2 mr-3 hidden translate-y-1/2 rounded-card border border-white/10 bg-base px-3 py-2 text-[11px] whitespace-nowrap text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 lg:block"
       >
         Contactez-nous sur WhatsApp
       </span>

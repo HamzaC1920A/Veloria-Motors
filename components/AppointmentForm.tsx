@@ -46,9 +46,19 @@ function validate(values: AppointmentPayload): Errors {
   return errors;
 }
 
+/*
+ * Champs à 52px et halo doré discret au focus, en complément de l'outline
+ * global de `globals.css` : la cible tactile gagne 4px et l'état actif du
+ * champ reste lisible même quand l'outline est masqué par un parent.
+ */
 const fieldClasses =
-  "h-12 w-full border border-white/12 bg-base px-4 text-sm text-white placeholder:text-white/30 " +
-  "transition-colors duration-300 focus:border-gold focus:outline-none";
+  "h-13 w-full rounded-card border border-white/12 bg-base px-4 text-sm text-white placeholder:text-white/45 " +
+  "transition-[border-color,box-shadow] duration-300 focus:border-gold focus:shadow-[0_0_0_3px_rgba(201,162,39,0.15)] focus:outline-none";
+
+const labelClasses =
+  "mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70";
+
+const legendClasses = "eyebrow mb-5";
 
 export function AppointmentForm() {
   const formId = useId();
@@ -99,169 +109,186 @@ export function AppointmentForm() {
   });
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
+    <form onSubmit={handleSubmit} noValidate className="space-y-9">
+      <fieldset className="border-0 p-0">
+        <legend className={legendClasses}>Vos coordonnées</legend>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label
+              htmlFor={fieldId("name")}
+              className={labelClasses}
+            >
+              Nom <span className="text-gold">*</span>
+            </label>
+            <input
+              id={fieldId("name")}
+              name="name"
+              type="text"
+              autoComplete="name"
+              placeholder="Votre nom"
+              value={values.name}
+              onChange={(event) => setField("name", event.target.value)}
+              {...invalidProps("name")}
+            />
+            {renderError("name")}
+          </div>
+
+          <div>
+            <label
+              htmlFor={fieldId("phone")}
+              className={labelClasses}
+            >
+              Téléphone <span className="text-gold">*</span>
+            </label>
+            <input
+              id={fieldId("phone")}
+              name="phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              placeholder="+216 ..."
+              value={values.phone}
+              onChange={(event) => setField("phone", event.target.value)}
+              {...invalidProps("phone")}
+            />
+            {renderError("phone")}
+          </div>
+        </div>
+      </fieldset>
+
+      <div className="hairline" aria-hidden="true" />
+
+      <fieldset className="border-0 p-0">
+        <legend className={legendClasses}>Votre véhicule</legend>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label
+              htmlFor={fieldId("brand")}
+              className={labelClasses}
+            >
+              Marque
+            </label>
+            <input
+              id={fieldId("brand")}
+              name="brand"
+              type="text"
+              placeholder="Ex. Volkswagen"
+              value={values.brand}
+              onChange={(event) => setField("brand", event.target.value)}
+              className={fieldClasses}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor={fieldId("model")}
+              className={labelClasses}
+            >
+              Modèle
+            </label>
+            <input
+              id={fieldId("model")}
+              name="model"
+              type="text"
+              placeholder="Ex. Golf 7"
+              value={values.model}
+              onChange={(event) => setField("model", event.target.value)}
+              className={fieldClasses}
+            />
+          </div>
+
+          <div className="sm:col-span-2">
+            <label
+              htmlFor={fieldId("service")}
+              className={labelClasses}
+            >
+              Service souhaité <span className="text-gold">*</span>
+            </label>
+            <select
+              id={fieldId("service")}
+              name="service"
+              value={values.service}
+              onChange={(event) => setField("service", event.target.value)}
+              {...invalidProps("service")}
+              className={cn(invalidProps("service").className, "[color-scheme:dark]")}
+            >
+              <option value="">Choisir un service…</option>
+              {services.map((service) => (
+                <option key={service.id} value={service.title}>
+                  {service.title}
+                </option>
+              ))}
+            </select>
+            {renderError("service")}
+          </div>
+        </div>
+      </fieldset>
+
+      <div className="hairline" aria-hidden="true" />
+
+      <fieldset className="border-0 p-0">
+        <legend className={legendClasses}>Votre demande</legend>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label
+              htmlFor={fieldId("date")}
+              className={labelClasses}
+            >
+              Date souhaitée
+            </label>
+            <input
+              id={fieldId("date")}
+              name="date"
+              type="date"
+              value={values.date}
+              onChange={(event) => setField("date", event.target.value)}
+              className={cn(fieldClasses, "[color-scheme:dark]")}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor={fieldId("time")}
+              className={labelClasses}
+            >
+              Heure souhaitée
+            </label>
+            <input
+              id={fieldId("time")}
+              name="time"
+              type="time"
+              value={values.time}
+              onChange={(event) => setField("time", event.target.value)}
+              className={cn(fieldClasses, "[color-scheme:dark]")}
+            />
+          </div>
+        </div>
+
+        <div className="mt-5">
           <label
-            htmlFor={fieldId("name")}
-            className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60"
+            htmlFor={fieldId("message")}
+            className={labelClasses}
           >
-            Nom <span className="text-gold">*</span>
+            Message
           </label>
-          <input
-            id={fieldId("name")}
-            name="name"
-            type="text"
-            autoComplete="name"
-            placeholder="Votre nom"
-            value={values.name}
-            onChange={(event) => setField("name", event.target.value)}
-            {...invalidProps("name")}
+          <textarea
+            id={fieldId("message")}
+            name="message"
+            rows={4}
+            placeholder="Décrivez votre besoin en quelques mots…"
+            value={values.message}
+            onChange={(event) => setField("message", event.target.value)}
+            className={cn(fieldClasses, "h-auto resize-y py-3.5")}
           />
-          {renderError("name")}
         </div>
-
-        <div>
-          <label
-            htmlFor={fieldId("phone")}
-            className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60"
-          >
-            Téléphone <span className="text-gold">*</span>
-          </label>
-          <input
-            id={fieldId("phone")}
-            name="phone"
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel"
-            placeholder="+216 ..."
-            value={values.phone}
-            onChange={(event) => setField("phone", event.target.value)}
-            {...invalidProps("phone")}
-          />
-          {renderError("phone")}
-        </div>
-
-        <div>
-          <label
-            htmlFor={fieldId("brand")}
-            className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60"
-          >
-            Marque
-          </label>
-          <input
-            id={fieldId("brand")}
-            name="brand"
-            type="text"
-            placeholder="Ex. Volkswagen"
-            value={values.brand}
-            onChange={(event) => setField("brand", event.target.value)}
-            className={fieldClasses}
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor={fieldId("model")}
-            className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60"
-          >
-            Modèle
-          </label>
-          <input
-            id={fieldId("model")}
-            name="model"
-            type="text"
-            placeholder="Ex. Golf 7"
-            value={values.model}
-            onChange={(event) => setField("model", event.target.value)}
-            className={fieldClasses}
-          />
-        </div>
-
-        <div className="sm:col-span-2">
-          <label
-            htmlFor={fieldId("service")}
-            className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60"
-          >
-            Service souhaité <span className="text-gold">*</span>
-          </label>
-          <select
-            id={fieldId("service")}
-            name="service"
-            value={values.service}
-            onChange={(event) => setField("service", event.target.value)}
-            {...invalidProps("service")}
-            className={cn(invalidProps("service").className, "[color-scheme:dark]")}
-          >
-            <option value="">Choisir un service…</option>
-            {services.map((service) => (
-              <option key={service.id} value={service.title}>
-                {service.title}
-              </option>
-            ))}
-          </select>
-          {renderError("service")}
-        </div>
-
-        <div>
-          <label
-            htmlFor={fieldId("date")}
-            className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60"
-          >
-            Date souhaitée
-          </label>
-          <input
-            id={fieldId("date")}
-            name="date"
-            type="date"
-            value={values.date}
-            onChange={(event) => setField("date", event.target.value)}
-            className={cn(fieldClasses, "[color-scheme:dark]")}
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor={fieldId("time")}
-            className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60"
-          >
-            Heure souhaitée
-          </label>
-          <input
-            id={fieldId("time")}
-            name="time"
-            type="time"
-            value={values.time}
-            onChange={(event) => setField("time", event.target.value)}
-            className={cn(fieldClasses, "[color-scheme:dark]")}
-          />
-        </div>
-      </div>
-
-      <div>
-        <label
-          htmlFor={fieldId("message")}
-          className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60"
-        >
-          Message
-        </label>
-        <textarea
-          id={fieldId("message")}
-          name="message"
-          rows={4}
-          placeholder="Décrivez votre besoin en quelques mots…"
-          value={values.message}
-          onChange={(event) => setField("message", event.target.value)}
-          className={cn(fieldClasses, "h-auto resize-y py-3.5")}
-        />
-      </div>
+      </fieldset>
 
       <Button type="submit" size="lg" className="w-full">
         <MessageCircle className="size-4" aria-hidden="true" />
         Envoyer ma demande
       </Button>
 
-      <p className="text-center text-xs leading-relaxed text-white/40">
+      <p className="text-center text-xs leading-relaxed text-muted">
         Votre demande est transmise directement sur WhatsApp — aucune donnée
         n&apos;est enregistrée sur ce site.
       </p>
